@@ -24,4 +24,3 @@ const InformacoesCard: React.FC<InformacoesCardProps> = ({ informacoes }) => {
 };
 
 export default InformacoesCard;
-

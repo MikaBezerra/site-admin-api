@@ -32,12 +32,18 @@ const CadastrarInformacoes: React.FC = () => {
 
     const fetchInformacao = async () => {
         try {
-            const informacao = await getInformacoes();
-            setInformacoes(informacao);
+          const informacoes = await getInformacoes();
+      
+          if (Array.isArray(informacoes) && informacoes.length > 0) {
+            setInformacoes(informacoes[0]);
+          } else {
+            setInformacoes(initialValues);
+          }
         } catch (error) {
-            console.error('Erro a buscar informacões', error);
+          console.error('Erro ao buscar informações', error);
         }
-    };
+      };
+      
 
     useEffect(() => {
         fetchInformacao();
@@ -116,9 +122,8 @@ const CadastrarInformacoes: React.FC = () => {
             </Formik>
 
             {informacoes &&
-                Object.entries(informacoes).some(
-                    ([key, value]) => key !== "id" && value.trim() !== ""
-                ) && (
+                Object.entries(informacoes).some(([key, value]) => key !== "id" && typeof value === "string" && value.trim() !== "")
+                && (
                     <div className={styles.cardContainer}>
                         <InformacoesCard informacoes={informacoes} />
 

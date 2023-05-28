@@ -1,19 +1,18 @@
 import React from "react";
-
-import styles from './login.module.css'
-import Input from "../../components/forms/input/Input";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { login as loginService } from "../../services/authServices";
+import { login } from "../../services/authServices";
 import { useAuth } from "../../contexts/AuthContext";
 import Form from '../../components/forms/form/Form';
+import Input from "../../components/forms/input/Input";
 import Button from "../../components/common/button";
 import Title from "../../components/common/title";
+import styles from './login.module.css'
 
 interface LoginValues {
     email: string;
     password: string;
-};
+}
 
 const initialValues: LoginValues = {
     email: "",
@@ -26,29 +25,27 @@ const validationSchema = Yup.object().shape({
         .required("E-mail obrigatório"),
     password: Yup.string()
         .min(6, "A senha deve conter pelo menos 6 caracteres")
-        .required("Senha é obrigatório"),
+        .required("Senha é obrigatória"),
 });
 
 const Login = () => {
-
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login: handleLogin } = useAuth();
 
     const onSubmit = async (values: LoginValues) => {
         try {
-            const user = await loginService(values.email, values.password);
-            login(user);
+            const user = await login(values);
+            handleLogin(user);
             navigate("/");
             console.log(values);
         } catch (error) {
             console.log(error);
             alert("Erro ao fazer login");
         }
-    }
+    };
 
     return (
         <div className={styles.loginWrapper}>
-
             <Form
                 initialValues={initialValues}
                 validationSchema={validationSchema}
