@@ -34,8 +34,8 @@ const CadastrarInformacoes: React.FC = () => {
         try {
           const informacoes = await getInformacoes();
       
-          if (Array.isArray(informacoes) && informacoes.length > 0) {
-            setInformacoes(informacoes[0]);
+          if (informacoes) {
+            setInformacoes(informacoes);
           } else {
             setInformacoes(initialValues);
           }
@@ -43,7 +43,6 @@ const CadastrarInformacoes: React.FC = () => {
           console.error('Erro ao buscar informações', error);
         }
       };
-      
 
     useEffect(() => {
         fetchInformacao();
